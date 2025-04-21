@@ -4,19 +4,17 @@
 #include "queue.h"
 
 Cola cola_crear(){
-    return NULL;
+    return glist_crear();
 }
 
 void cola_destruir(Cola cola, FuncionDestructora destroy){
-    destroy(cola->lista->data);
-    free(cola->lista);
-    free(cola);
+    glist_destruir(cola, destroy);
 }
 
 int cola_es_vacia(Cola cola){
-    return (cola->lista == NULL);
+    return (cola == NULL);
 }
 
 void* cola_inicio(Cola cola){
-    return cola->lista->frente->data;
+    return cola->frente->data;
 }

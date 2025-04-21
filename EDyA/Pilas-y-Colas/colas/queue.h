@@ -3,12 +3,7 @@
 
 #include "queueglist.h"
 
-struct _Queue{
-    GList lista;
-
-};
-
-typedef struct _Queue *Cola;
+typedef GList Cola;
 
 
 
