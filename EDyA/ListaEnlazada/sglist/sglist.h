@@ -10,6 +10,7 @@ typedef int (*FuncionComparadora)(void* dato1, void* dato2);
 typedef struct _GNode {
   void *data;
   struct _GNode *next;
+
 } GNode;
 
 typedef GNode *GList;

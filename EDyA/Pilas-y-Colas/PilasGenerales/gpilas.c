@@ -3,34 +3,52 @@
 #include "gpilas.h"
 
 GPila crear_gpila(){
-    GPila pila = glist_crear();
+    GPila pila = malloc(sizeof(struct _GPilas));
+    pila->lista = glist_crear();
     return pila;
 }
 
 void gpila_destruir(GPila pila, FuncionDestructora destroy){
-    glist_destruir(pila, destroy);
+    glist_destruir(pila->lista, destroy);
+    free(pila);
 }
 
-void gpila_es_vacia(GPila pila){
-    return(pila== NULL);
+int gpila_es_vacia(GPila pila){
+    return(pila->lista == NULL);
 
 }
 
-int pila_tope(GPila pila){
+void* pila_tope(GPila pila){
     return pila->lista->data;
 }
 
-void pila_apilar(GPila pila, int dato, FuncionCopia copy){
-    glist_agregar_inicio(pila, dato, copy);
+void pila_apilar(GPila pila, void* dato, FuncionCopia copy){
+    glist_agregar_inicio(&(pila->lista), dato, copy);
 }
 
 
 void pila_desapilar(GPila pila){
-    GPila temp = pila;
-    pila = pila->lista->next;
+    GList temp = pila->lista;
+    pila->lista = pila->lista->next;
+    
     free(temp);
+
+}
+
+GList dar_vuelta(GList lista, FuncionCopia copy){
+    GPila pila = crear_gpila();
+    pila->lista = lista;
+
+    GList nuevaLista = glist_crear();
+
+    for(;(!gpila_es_vacia(pila));){
+        glist_agregar_inicio(&nuevaLista, pila_tope(pila), copy);
+        pila_desapilar(pila);
+
+    }
+    return nuevaLista;
 }
 
 void pila_imprimir(GPila pila, FuncionVisitante visit){
-    glist_recorrer(pila, visit);
+    glist_recorrer(pila->lista, visit);
 }

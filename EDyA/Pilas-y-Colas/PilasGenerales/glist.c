@@ -35,6 +35,7 @@ void glist_agregar_inicio(GList *list, void *data, FuncionCopia copy) {
   assert(newNode != NULL);
   newNode->next = *list;
   newNode->data = copy(data);
+  *list = newNode;
   
 }
 

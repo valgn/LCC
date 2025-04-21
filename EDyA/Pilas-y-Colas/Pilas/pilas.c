@@ -4,7 +4,7 @@
 
 Pila pila_crear(int capacidad){
     ArregloEnteros* arreglo = arreglo_enteros_crear(capacidad);
-    Pila pila = malloc(sizeof(Pila));
+    Pila pila = malloc(sizeof(struct _Pila));
     pila->arr = arreglo;
     pila->ultimo = -1;
     return pila;
