@@ -64,10 +64,10 @@ int glist_buscar(GList lista, void* dato, FuncionComparadora f){
 }
 
 GList glist_arr(void **arr, int len, FuncionCopia f, FuncionComparadora comp){
-    GList lista = sglist_crear();
+    GList lista = glist_crear();
 
     for(int i = 0; i < len; i++){
-        lista = sglist_insertar(lista, arr[0], f, comp);
+        lista = glist_insertar(lista, arr[0], f, comp);
     }
 
     return lista;

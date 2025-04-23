@@ -1,5 +1,5 @@
-#ifndef ___QUEUEGLIST.H___
-#define ___QUEUEGLIST.H___
+#ifndef ___QUEUEGLIST_H___
+#define ___QUEUEGLIST_H___
 
 typedef void (*FuncionDestructora)(void* dato);
 typedef void (*FuncionVisitante)(void* dato);
@@ -10,8 +10,6 @@ typedef int (*FuncionComparadora)(void* dato1, void* dato2);
 typedef struct _GNode {
   void *data;
   struct _GNode *next;
-  struct _GNode *frente;
-  struct _GNode *ultimo;
 } GNode;
 
 typedef GNode *GList;

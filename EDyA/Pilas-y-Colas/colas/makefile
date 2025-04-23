@@ -4,17 +4,21 @@
 
 FLAGS = -Wall -Wextra -Werror -std=c99
 
-programa: main.o sglist.o contacto.o
+programa: main.o queueglist.o contacto.o queue.o
 	$(CC) -o $@ $^ $(FLAGS)
 
-main.o: main.c sglist.h contacto.h
+main.o: main.c queueglist.h contacto.h queue.h
 	$(CC) -c $< $(FLAGS)
 
-glist.o: sglist.c sglist.h
+queueglist.o: queueglist.c queueglist.h
 	$(CC) -c $< $(FLAGS)
 
 contacto.o: contacto.c contacto.h
 	$(CC) -c $< $(FLAGS)
+
+queue.o: queue.c queue.h
+	$(CC) -c $< $(FLAGS)
+
 
 clean:
 	rm *.o
