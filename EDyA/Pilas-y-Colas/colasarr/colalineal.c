@@ -101,6 +101,13 @@ int main(){
     printf("La cola tras sacar los primeros %d elementos quedo: \n", i);
     recorrerCola(cola);
     printf("\n");
+    enqueue(&cola, 1);
+    enqueue(&cola, 1);
+    enqueue(&cola, 1);
+    enqueue(&cola, 1);
+    enqueue(&cola, 1);
+    recorrerCola(cola);
+    printf("\n");
 
 
     return 0;
