@@ -7,7 +7,13 @@ struct _Pila {
     ArregloEnteros *arr;
     int ultimo;
 };
+
 typedef struct _Pila *Pila;
+
+typedef struct{
+    Pila p1;
+    Pila p2;
+}Cola;
 
 Pila pila_crear(int capacidad);
 
@@ -20,6 +26,8 @@ int pila_tope(Pila pila);
 void pila_apilar(Pila pila, int elemento);
 
 void pila_desapilar(Pila pila);
+
+int pila_desapilar2(Pila pila);
 
 void pila_imprimir(Pila pila);
 

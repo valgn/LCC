@@ -39,6 +39,15 @@ void pila_desapilar(Pila pila){
 
     
 }
+int pila_desapilar2(Pila pila){
+    if(!pila_es_vacia(pila)){
+        int final= pila->ultimo;
+        int retorno= pila->arr->direccion[final];
+        pila->ultimo= pila->ultimo-1; 
+        return retorno;
+    }
+    return 0;
+}
 
 void pila_imprimir(Pila pila){
     for (int i = 0; i <= pila->ultimo; i++)
