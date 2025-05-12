@@ -6,6 +6,11 @@ static void imprimir_entero(int data) {
   printf("%d ", data);
 }
 
+void funcionloca(int dato, void* tincho){
+  printf("%d", dato);
+
+}
+
 
 
 int main() {
@@ -23,7 +28,7 @@ int main() {
   BTree r = btree_unir(3, rl, rr);
   BTree raiz = btree_unir(4, l, r);
 
-  btree_recorrer(raiz, BTREE_RECORRIDO_POST, imprimir_entero);
+ // btree_recorrer(raiz, BTREE_RECORRIDO_IN, imprimir_entero);
   //btree_preorder(raiz, (FuncionVisitante)imprimir_entero);
   puts("");
   //imprimir_entero(btree_nnodos(raiz));
@@ -32,7 +37,10 @@ int main() {
   //BTree copia = btree_copiar(raiz);
   //btree_recorrer(copia, BTREE_RECORRIDO_POST, imprimir_entero);
 
-  imprimir_entero(btree_sumar(raiz));
+  //imprimir_entero(btree_sumar(raiz));
+  //int cantNodos = 0;
+  //printf("%d", iesimo(raiz, 2, &cantNodos));
+  btree_recorrer_bfs(raiz, imprimir_entero);
   puts("");
   
   

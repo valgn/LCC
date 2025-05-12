@@ -5,6 +5,7 @@ typedef void (*FuncionVisitante)(int dato);
 typedef void (*FuncionDestructora)(void *dato);
 typedef void *(*FuncionCopia)(void *dato);
 typedef int (*Predicado) (void *dato);
+typedef void (*FuncionVisitanteExtra) (int dato, void *extra);
 
 typedef enum {
   BTREE_RECORRIDO_IN,
@@ -55,4 +56,11 @@ int btree_nnodos_profundidad(BTree tree, int profundidad);
 
 int btree_profundidad(BTree tree, int dato);
 int btree_sumar(BTree tree);
+
+int iesimo(BTree tree, int menor, int* cantNodos);
+
+void santinobisutti(BTree arbolete, FuncionVisitante visit, int level);
+void btree_recorrer_bfs(BTree arbol, FuncionVisitante visit);
+
+
 #endif /* __BTREE_H__ */

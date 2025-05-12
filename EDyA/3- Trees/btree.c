@@ -118,6 +118,7 @@ void btree_recorrer(BTree arbol, BTreeOrdenDeRecorrido orden,
   return;
 }
 
+
 void btree_preorder(BTree tree, FuncionVisitante visit){
   Pila* pila = pila_crear();
   if(tree == NULL){
@@ -197,6 +198,7 @@ int btree_profundidad(BTree tree, int dato){
   if(tree->dato == dato){
     return 0;
   }
+  
   int profundidad = btree_profundidad(tree->left, dato);
   if(profundidad != -1) return 1 + profundidad;
   
@@ -212,3 +214,53 @@ int btree_sumar(BTree tree){
   }
   return tree->dato + btree_sumar(tree->left) + btree_sumar(tree->right);
 }
+
+int iesimo(BTree tree, int menor, int* cantNodos) {
+  if (tree == NULL) {
+      return 0;  // Si el nodo es NULL, no hay nada que hacer
+  }
+
+  // Recorrer el subárbol izquierdo
+  int left = iesimo(tree->left, menor, cantNodos);
+
+  // Si ya encontramos el valor, lo retornamos
+  if (left != 0) {
+      return left;
+  }
+
+  // Incrementar el contador al procesar el nodo actual
+  (*cantNodos)++;
+
+  // Si el contador alcanza 'menor', hemos encontrado el nodo
+  if (*cantNodos == menor) {
+      return tree->dato;  // Retornar el valor del nodo
+  }
+
+  // Recorrer el subárbol derecho
+  return iesimo(tree->right, menor, cantNodos);
+}
+
+void santinobisutti(BTree arbolete, FuncionVisitante visit, int level){
+  if(arbolete == NULL){
+    return;
+  }
+  if (level == 0){
+    visit(arbolete->dato);
+  }
+  else{
+    santinobisutti(arbolete->left, visit, level - 1);
+    santinobisutti(arbolete->right, visit, level - 1);
+  }
+}
+
+
+
+void btree_recorrer_bfs(BTree arbol, FuncionVisitante visit){
+  int altura = btree_altura(arbol);
+  for (int i = 0; i < altura; i++) {
+    santinobisutti(arbol, visit,i);
+}
+
+}
+
+
