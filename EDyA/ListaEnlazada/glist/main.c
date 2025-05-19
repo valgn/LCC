@@ -17,7 +17,7 @@ int main() {
   for (int i = 0; i < 6; ++i) {
     lista =
         glist_agregar_inicio(lista, contactos[i], (FuncionCopia)contacto_copia);
-    contacto_destruir(contactos[i]);
+        contacto_destruir(contactos[i]);
   }
 
   lista = glist_filtrar(lista, (FuncionCopia)contacto_copia, (Predicado)mayor50);
