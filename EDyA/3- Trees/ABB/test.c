@@ -27,6 +27,12 @@ static void imprimir_cadena(void *dato, __attribute__((unused)) void *extra) {
 }
 
 int main() {
+    BSTree raiz = crear_nodo("mango");
+
+    raiz->izq = crear_nodo("banana");
+    raiz->der = crear_nodo("pera");
+
+    raiz->der->izq = crear_nodo("apple");  // Este nodo rompe la propiedad ABB
 
   char *palabras[N_PALABRAS] = {"gato",      "perro",    "casa",     "persona",
                                 "parque",    "arbol",    "edificio", "calle",
@@ -38,15 +44,19 @@ int main() {
   for (int i = 0; i < N_PALABRAS; i++)
     arbol = bstree_insertar(arbol, palabras[i], copiar_cadena, comparar_cadena);
 
+
+
   // Imprimir el arbol inorden (alfabetico)
   printf("Recorrido inorden: ");
   bstree_recorrer(arbol, BTREE_RECORRIDO_IN, imprimir_cadena, NULL);
   puts("");
+  printf("%d", btree_validar(raiz, comparar_cadena));
 
 
-  arbol = bstree_eliminar(arbol, "casa", (FuncionComparadora)comparar_cadena, (FuncionDestructora)destruir_cadena, (FuncionCopiadora)copiar_cadena);
+  //arbol = bstree_eliminar(arbol, "casa", (FuncionComparadora)comparar_cadena, (FuncionDestructora)destruir_cadena, (FuncionCopiadora)copiar_cadena);
   puts("");
-  bstree_recorrer(arbol, BTREE_RECORRIDO_IN, imprimir_cadena, NULL);
+  //bstree_recorrer(arbol, BTREE_RECORRIDO_IN, imprimir_cadena, NULL);
+  //imprimir_cadena(bstree_k_esimo_menor(arbol, 2), NULL);
 
   // Buscar elementos
   // assert(bstree_buscar(arbol, "farmacia", comparar_cadena) == 1);

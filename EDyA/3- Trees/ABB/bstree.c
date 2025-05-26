@@ -1,6 +1,7 @@
 #include "bstree.h"
 #include <assert.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 /**
  * Estructura del nodo del arbol de busqueda binaria.
@@ -8,10 +9,15 @@
  * un puntero al nodo raiz del subarbol izquierdo (izq),
  * y un puntero al nodo raiz del subarbol derecho (der).
  */
-struct _BST_Nodo {
-  void *dato;
-  struct _BST_Nodo *izq, *der;
-};
+
+
+BSTree crear_nodo(void *dato) {
+    BSTree nodo = malloc(sizeof(struct _BST_Nodo));
+    nodo->dato = dato;
+    nodo->izq = NULL;
+    nodo->der = NULL;
+    return nodo;
+}
 
 /**
  * bstee_crear: Retorna un arbol de busqueda binaria vacio
@@ -54,6 +60,7 @@ BSTree bstree_insertar(BSTree raiz, void *dato, FuncionCopiadora copia,
   if (raiz == NULL) { // insertar el dato en un nuevo nodo
     struct _BST_Nodo *nuevoNodo = malloc(sizeof(struct _BST_Nodo));
     assert(nuevoNodo != NULL);
+
     nuevoNodo->dato = copia(dato);
     nuevoNodo->izq = nuevoNodo->der = NULL;
     return nuevoNodo;
@@ -125,4 +132,38 @@ BSTree bstree_eliminar(BSTree arbol, void *dato, FuncionComparadora comp, Funcio
     }
 
     return arbol;
+}
+
+
+void* bstree_k_esimo_menor_aux(BSTree arbol, int* k){
+  if(arbol== NULL){
+    return NULL;
+  }
+  void* izq = bstree_k_esimo_menor_aux(arbol->izq, k);
+  if(izq != NULL) return izq;
+  (*k)--;
+  if(*k == 0) return arbol->dato;
+  return bstree_k_esimo_menor_aux(arbol->der, k);
+
+}
+
+void* bstree_k_esimo_menor(BSTree arbol, int k){
+  return bstree_k_esimo_menor_aux(arbol, &k);
+}
+
+int btree_validar(BSTree arbol, FuncionComparadora comp){
+  if (arbol == NULL) return 1;
+
+  // Validar hijo izquierdo
+  if (arbol->izq != NULL && comp(arbol->dato, arbol->izq->dato) <= 0) {
+    return 0; // El dato del hijo izquierdo no es menor
+  }
+
+  // Validar hijo derecho
+  if (arbol->der != NULL && comp(arbol->der->dato, arbol->dato) <= 0) {
+    return 0; // El dato del hijo derecho no es mayor
+  }
+
+  // Recursivamente validar los subárboles
+  return btree_validar(arbol->izq, comp) && btree_validar(arbol->der, comp);
 }
