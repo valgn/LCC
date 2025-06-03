@@ -97,3 +97,75 @@ BHeap bheap_eliminar(BHeap heap){
     return heap;
 }
 
+void* bheap_eliminar_retornador(BHeap heap){
+   
+    void* maximo = heap->arr[1];
+
+
+    heap->arr[1] = heap->arr[heap->ultimo];
+    heap->ultimo--;
+    int j = 1;
+    int flag = 1;
+    while(2*j <= heap->ultimo && flag){
+        int hijoizq = 2*j;
+        int hijoder = 2*j+1;
+        int mayor = hijoizq;
+        if(hijoder <= heap->ultimo && (heap->comp(heap->arr[hijoder], heap->arr[hijoizq]) > 0)){
+            mayor = hijoder;
+    }
+        if(heap->comp(heap->arr[mayor], heap->arr[j]) > 0){
+        void* temp = heap->arr[j];
+        heap->arr[j] = heap->arr[mayor];
+        heap->arr[mayor] = temp;
+        j = mayor;
+    }
+        else{
+            flag = 0;
+        }
+    }
+    return maximo;
+}
+
+BHeap bheap_crear_desde_arr(void **arr, int largo, FuncionCopiadora copiar,
+FuncionComparadora comp){
+    BHeap heap = bheap_crear(largo, comp);
+    for(int i = 0; i < largo; i++){
+        heap->ultimo++;
+        if(heap->ultimo > heap->capacidad){
+            heap->capacidad = heap->capacidad*2;
+            heap->arr = realloc(heap->arr, sizeof(void*)*(heap->capacidad + 1));
+        }
+        heap->arr[heap->ultimo] = copiar(arr[i]);
+
+        //Heapify
+            for(int j = heap->ultimo; j>1 && (heap->comp(heap->arr[j], heap->arr[j/2]) > 0); j=j/2){
+                void* temp = heap->arr[j];
+                heap->arr[j] = heap->arr[j/2];
+                heap->arr[j/2] = temp;  
+            }
+
+        }
+    return heap;
+}
+
+int* heapsort(int* arr, int n, FuncionCopiadora copy, FuncionComparadora comp){
+    void* punteros[n];
+    for(int i = 0; i < n; i++){
+        punteros[i] = &arr[i];
+    }
+    BHeap heap = bheap_crear_desde_arr(punteros, n, copy, comp);
+    int* nuevoarr = malloc(sizeof(int)*n);
+    
+    //printf("%d\n",*(int*)heap->arr[1]);
+
+
+    for (int i = n - 1; i >= 0; i--) {
+        void* maximo = bheap_eliminar_retornador(heap);
+        nuevoarr[i] = *(int*)maximo;
+         // liberar si retornador devuelve copia
+    }
+    
+    return nuevoarr;
+}
+
+//cola de prioridad es lo mismo q heap lol xd lol

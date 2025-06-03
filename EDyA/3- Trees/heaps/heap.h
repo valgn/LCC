@@ -40,4 +40,11 @@ BHeap bheap_insertar(BHeap heap, void* dato, FuncionCopiadora copia);
 
 BHeap bheap_eliminar(BHeap heap);
 
+BHeap bheap_crear_desde_arr(void **arr, int largo, FuncionCopiadora copiar,
+FuncionComparadora comp);
+
+void* bheap_eliminar_retornador(BHeap heap);
+
+int* heapsort(int* arr, int n, FuncionCopiadora copy, FuncionComparadora comp);
+
 #endif

@@ -62,5 +62,7 @@ int iesimo(BTree tree, int menor, int* cantNodos);
 void santinobisutti(BTree arbolete, FuncionVisitante visit, int level);
 void btree_recorrer_bfs(BTree arbol, FuncionVisitante visit);
 
+BTree mirror(BTree arbol);
+
 
 #endif /* __BTREE_H__ */

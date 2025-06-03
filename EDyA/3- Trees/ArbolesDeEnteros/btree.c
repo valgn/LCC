@@ -263,5 +263,20 @@ void btree_recorrer_bfs(BTree arbol, FuncionVisitante visit){
 
 }
 
+BTree mirror(BTree arbol){
+  if(arbol == NULL){
+    return NULL;
+  }
+  BTree espejin = malloc(sizeof(struct _BTNodo));
+  espejin->dato = arbol->dato;
 
+  espejin->left = mirror(arbol->right);
+  espejin->right = mirror(arbol->left);
+
+  return espejin;
+}
+
+int btree_completo(BTree raiz){
+  
+}
 
