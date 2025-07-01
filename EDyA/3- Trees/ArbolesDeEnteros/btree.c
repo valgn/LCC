@@ -276,7 +276,4 @@ BTree mirror(BTree arbol){
   return espejin;
 }
 
-int btree_completo(BTree raiz){
-  
-}
 
