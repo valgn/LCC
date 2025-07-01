@@ -8,6 +8,8 @@
 
 typedef Lista (*FuncionPrimitiva)(Lista lista);
 
+typedef Lista (*Funcion)(Lista);
+
 Lista Oi(Lista lista); // Agrega un 0 a la izquierda de una lista
 
 Lista Od(Lista lista); //Agrega un 0 a la derecha del todo de una lista
@@ -27,5 +29,25 @@ typedef struct{
     FuncionPrimitiva* f;
     int cant;
 }FuncionCompuesta; //Array de funciones primitivas
+
+typedef struct{
+    Funcion f;
+}FuncionRepeticion;
+
+typedef enum {
+    PRIMITIVA,
+    COMPUESTA,
+    REPETICION
+}TipoFuncion;
+
+typedef struct {
+    TipoFuncion tipo;
+    union{
+        FuncionPrimitiva primi;
+        FuncionCompuesta comp;
+        FuncionRepeticion repe;
+    };
+
+}Funcion;
 
 #endif
