@@ -4,7 +4,7 @@ CC = gcc
 CFLAGS = -Wall -g
 
 # Archivos fuente y objeto
-OBJ = avl.o test.o
+OBJ = listas.o funciones.o parser.o main.o
 
 # Nombre del ejecutable
 EXEC = test
@@ -15,11 +15,18 @@ all: $(EXEC)
 $(EXEC): $(OBJ)
 	$(CC) $(CFLAGS) -o $(EXEC) $(OBJ)
 
-avl.o: avl.c avl.h
-	$(CC) $(CFLAGS) -c avl.c
+listas.o: listas.c listas.h
+	$(CC) $(CFLAGS) -c listas.c
 
-test.o: test.c avl.h
-	$(CC) $(CFLAGS) -c test.c
+funciones.o: funciones.c funciones.h
+	$(CC) $(CFLAGS) -c funciones.c
+
+parser.o: parser.c parser.h
+	$(CC) $(CFLAGS) -c parser.c
+
+main.o: main.c funciones.h parser.h
+	$(CC) $(CFLAGS) -c main.c
+
 
 # Limpiar archivos compilados
 clean:

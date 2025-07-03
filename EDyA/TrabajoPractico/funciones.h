@@ -1,53 +1,51 @@
-#ifndef __FUNCIONES_H__
-#define __FUNCIONES_H__
-
+#ifndef FUNCIONES_H
+#define FUNCIONES_H
 
 #include "listas.h"
 
-/*       FUNCIONES PRIMITIVAS       */
-
+/* --- Funciones primitivas --- */
 typedef Lista (*FuncionPrimitiva)(Lista lista);
 
-typedef Lista (*Funcion)(Lista);
-
-Lista Oi(Lista lista); // Agrega un 0 a la izquierda de una lista
-
-Lista Od(Lista lista); //Agrega un 0 a la derecha del todo de una lista
-
-Lista Si(Lista lista); //Suma 1 al elemento de la izquierda de la lista
-
-Lista Sd(Lista lista); //Suma 1 al elemento de la derecha del todo de la lista
-
-Lista Di(Lista lista); //Elimina el elemento de la izquierda de la lista
-
-Lista Dd(Lista lista); //Elimina el elemento de la derecha del todo de la lista
-
-
-/*      Funcion Compuesta      */
-
-typedef struct{
-    FuncionPrimitiva* f;
-    int cant;
-}FuncionCompuesta; //Array de funciones primitivas
-
-typedef struct{
-    Funcion f;
-}FuncionRepeticion;
-
+/* --- Tipos de función posibles --- */
 typedef enum {
     PRIMITIVA,
     COMPUESTA,
     REPETICION
-}TipoFuncion;
+} TipoFuncion;
 
+/* --- Adelanto de tipo para casos recursivos --- */
+typedef struct Funcion Funcion;
+
+/* --- Función compuesta: array de sub-funciones --- */
 typedef struct {
+    Funcion* pasos; 
+    int     cant;
+} FuncionCompuesta;
+
+/* --- Función repetición: puntero a sub-función --- */
+typedef struct {
+    Funcion* sub; 
+} FuncionRepeticion;
+
+/* --- Definición de la estructura Funcion --- */
+struct Funcion {
     TipoFuncion tipo;
-    union{
-        FuncionPrimitiva primi;
-        FuncionCompuesta comp;
-        FuncionRepeticion repe;
+    union {
+        FuncionPrimitiva   primi;  // caso PRIMITIVA
+        FuncionCompuesta   comp;   // caso COMPUESTA
+        FuncionRepeticion  repe;   // caso REPETICION
     };
+};
 
-}Funcion;
+/* --- Prototipos públicos --- */
+FuncionPrimitiva obtener_primitiva(const char* nombre);
 
-#endif
+Funcion crear_primitiva(FuncionPrimitiva fptr);
+Funcion crear_compuesta(Funcion* pasos, int cant);
+Funcion crear_repeticion(Funcion* subf); 
+
+Lista aplicar_funcion(Funcion f, Lista lista);
+Lista aplicar_funcion_compuesta(const FuncionCompuesta comp, Lista lista);
+Lista aplicar_funcion_repeticion(const FuncionRepeticion rep, Lista lista);
+
+#endif /* FUNCIONES_H */
