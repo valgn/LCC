@@ -1,14 +1,14 @@
-function y=derivar(f,v,n,h)
-    for i=1:1:n
-        deff("res=tmp(x)", "res=(f(v+h) - f(v))/h")
-        y=tmp
+function v = derivar(f,vx,n,h)
+    if n==0
+         v=f(vx)
+    else 
+         v=(derivar(f,vx+h,n-1,h)-derivar(f,vx,n-1,h))/h
     end
-    y =y(v)
 endfunction
 
 function y=f(x)
     y = sin(x)
 endfunction
 
-disp(derivar(f, %pi, 2, 10^-8))
+disp(derivar(f, %pi, 2 ,10^-3))
 
