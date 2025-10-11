@@ -49,9 +49,9 @@ function [x,a] = gausselimPP(A,b)
 endfunction
 
 // Ejemplo de aplicación
-A2 = [0 2 3; 2 0 3; 8 16 -1]
-b2 = [7 13 -3]' 
+A = [1 2 0 0;3 1 3 0;0 1 1 5;0 0 3 1]
+b = [4 1 -3 4]' 
 
-[x2,a2] = gausselimPP(A2,b2)
+[x2,a2] = gausselimPP(A,b)
 disp(x2)
 disp(a2)

@@ -20,18 +20,16 @@ function [x,a] = gausselim(A,b)
     for k=1:n-1
      
                 a(k+1,k+1) = a(k+1,k+1) - a(k,k+1) * a(k+1,k)/a(k,k)
-                
-                a(k+1,k+1) = 0                                    
+                a(k+1,n+1) = a(k+1,n+1) - a(k,n+1) * a(k+1,k)/a(k,k)
+                a(k+1,k) = 0                                    
         end;
     
-    disp(a)
+    
     
     // Sustitución regresiva
     x(n) = a(n,n+1)/a(n,n);
     for i = n-1:-1:1
-        sumk = a(i,i+1:n)*x(i+1:n)
-        
-        x(i) = (a(i,n+1)-sumk/a(i,i));
+            x(i) = (a(i,n+1)-a(i, i+1)*x(i+1))/a(i,i)
     end;
     
 endfunction
@@ -43,7 +41,7 @@ b = [0 6 -1]'
 A = [1 2 0 0;3 1 3 0;0 1 1 5;0 0 3 1]
 b = [4 1 -3 4]'
 
-
+disp(A)
 
 [x,a] = gausselim(A,b)
 disp(x)
