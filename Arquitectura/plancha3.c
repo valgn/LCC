@@ -18,10 +18,14 @@ int myisnan2(FloatBit f){
 }
 
 
+
+
 int main(void)
 {
     float g = 0.0;
     float f = 0.0 / g;
+    float h = INFINITY - INFINITY;
+
     FloatBit f2;
     f2.f = f;
     printf("f: %f\n", f);
@@ -40,5 +44,12 @@ int main(void)
     if(myisnan2(f2)){
         printf("Este tambien funca.\n");
     }
+    if(isinf(h)){
+        printf("El numero es infinito\n");
+    }
+    if(h == INFINITY){
+        printf("El numero es infinito.\n");
+    }
+    printf("%f\n", h);
     return 0;
 }

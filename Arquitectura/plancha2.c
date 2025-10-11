@@ -32,19 +32,31 @@ unsigned int exponente(union FloatBits f){
     return (f.u & mask) >> 23;
 }
 
+unsigned int intercambiar(unsigned int x){
+    
+    x = x << 16 | x >> 16;
+    return x;
+}
+
 
 
 int main(){
-    union FloatBits fb;
-    fb.f = 6.225;
-    unsigned int frac = fraccion(fb);
-    unsigned int expo = exponente(fb);
-    printbin(fb.u);
+    // union FloatBits fb;
+    // fb.f = 6.225;
+    // unsigned int frac = fraccion(fb);
+    // unsigned int expo = exponente(fb);
+    // printbin(fb.u);
+    // printf("\n");
+    // printbin(frac);
+    // printf("\n");
+    // printbin(expo);
+    // printf("\n");
+    // float f = 6.225f;
+    // printf("Error: %.20f\n", 6.225 - fb.f);
+    unsigned int x = 4294901760;
+    printbin(x);
+    x = intercambiar(x);
     printf("\n");
-    printbin(frac);
-    printf("\n");
-    printbin(expo);
-    printf("\n");
-    float f = 6.225f;
-    printf("Error: %.20f\n", 6.225 - fb.f);
+    printbin(x);
+
 }
