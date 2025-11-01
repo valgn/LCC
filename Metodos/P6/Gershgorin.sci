@@ -25,3 +25,4 @@ function gershgorin_plot(A)
     ylabel("Parte imaginaria");
     title("Círculos de Gershgorin");
 endfunction
+

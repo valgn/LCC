@@ -110,3 +110,4 @@ printf("Pivoteo parcial tarda %d segundos para N = %d.\n", t, N)
 
 
 
+
