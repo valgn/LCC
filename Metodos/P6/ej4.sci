@@ -1,3 +1,4 @@
+// Creo que esta el ejercicio 4 y 5
 function circ(r, x, y)
     plot2d(0,0,rect=[-10,-10,10,10],frameflag=3,axesflag=4);
     xarc(x-r, y+r, 2*r, 2*r,90*64, 270*64)
@@ -20,6 +21,25 @@ function CircGersValor(A)
     disp(autoval)
     Gers(A)
     plot2d(real(autoval), imag(autoval), style=-5)
+endfunction
+
+function [l,v]=potmethod(A)
+    
+    [n,m] = size(A)
+    z = zeros(m,1) + 1 // z0
+    w = A*z     // w1
+    zk = z
+    z = w/norm(w,%inf)
+    while (norm(z - zk) > 10^-7)
+        zk = z
+        w = A*z 
+        z = w/norm(w,%inf)
+    end
+    [maxv, j] = max(abs(z))
+    l = w(j)/zk(j)
+    v = z
+
+    
 endfunction
 
 A = [4 -1 0; -1 4 -1; -1 -1 4];

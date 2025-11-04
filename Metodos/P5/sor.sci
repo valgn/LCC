@@ -32,7 +32,9 @@ function [x,cont] = sor(A,b,x0,w,eps)
 
 endfunction
 
-
+function p=r_sor(w)
+    p = sqrt(-(2/w-1)^2+1)
+endfunction
 
 
 A = [4 3 0; 3 4 -1; 1 -1 4]
@@ -41,7 +43,7 @@ x = [3 4 -5]'
 [n,m] = size(A)
 MatrizIt = (eye(n,n) - inv(diag(diag(A)))*A)
 radioespec = max(abs(spec(MatrizIt)))
-w = 2/(1+sqrt(1-p^2))
+w = 2/(1+sqrt(1-radioespec^2))
 [x, cont] = sor(A,b,x, w, 10^-7)
 printf("Con el metodo de relajacion, con w optimo: \n")
 printf("Cantidad de iteraciones: %d.\n", cont)
