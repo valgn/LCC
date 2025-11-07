@@ -1,7 +1,7 @@
 function t=diagonalDominante(A)
     diagDom = %T
     for i=1:size(A,1)
-        if(abs(A(i,i)) <= sum(abs(A(i, :))) - abs(A(i,i))
+        if(abs(A(i,i)) <= sum(abs(A(i, :))) - abs(A(i,i)))
             diagDom = %F
             break
         end
@@ -19,6 +19,14 @@ function r=definidaPositiva(A)
         end
     end
     
+endfunction
+
+function r=esSimetrica(A)
+    if(A == A') then
+        r = %T
+    else 
+        r = %F
+    end
 endfunction
 
 function graficoConvergencia(errores)

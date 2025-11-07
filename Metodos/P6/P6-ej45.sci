@@ -1,16 +1,37 @@
 function circ(r, x, y)
-    plot2d(0,0,rect=[-10,-10,10,10],frameflag=3,axesflag=4);
-    xarc(x-r, y+r, 2*r, 2*r,0, 360*64)
-    gca().x_location = 'origin';
-    gca().isoview = "on"
+    xarc(real(x)-r, imag(y)+r, 2*r, 2*r, 0, 360*64);
 endfunction
 
 function Gers(A)
     clf();
-    xgrid();
-    n = size(A,1)
+    n = size(A,1);
+    
+    radios = zeros(n,1);
     for i=1:n
-        circ(sum(abs(A(i,:)))-abs(A(i,i)), A(i,i), 0) 
+        radios(i) = sum(abs(A(i,:))) - abs(A(i,i));
+    end
+    
+    centros = diag(A);
+    xmin = min(real(centros)- radios);
+    xmax = max(real(centros) +radios);
+    ymin = min(imag(centros) -radios);
+    ymax = max(imag(centros) +radios);
+
+    margen = 0.2* max([xmax-xmin,ymax-ymin]);
+    xmin = xmin -margen;
+    xmax = xmax + margen;
+    ymin = ymin - margen;
+    ymax = ymax + margen;
+
+    plot2d(0, 0, rect=[xmin,ymin,xmax,ymax], frameflag=3, axesflag=4);
+    gca().x_location = "origin";
+    gca().y_location = "origin";
+    gca().isoview = "on";
+    xgrid();
+
+
+    for i=1:n
+        circ(radios(i), A(i,i), 0);
     end
 
 endfunction

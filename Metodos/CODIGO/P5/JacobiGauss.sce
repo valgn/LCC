@@ -99,3 +99,69 @@ function diagonalDominante = esDiagonalDominanteGS(A)
     
 endfunction
 
+// GAuss Seidel Matricial
+function y = GS(A, b, x0, e)
+    x = x0
+    N = tril(A) 
+    Ninversa = inv(N)
+    xk = Ninversa*((N-A)*x0 + b)
+    count = 1
+    
+    while abs(norm(A*x-b)) > e
+        x = Ninversa*((N-A)*xk + b)
+        xk = x
+        count = count + 1
+    end
+    //disp(count)
+    y = x
+endfunction
+
+// Jacobi Matricial
+
+function y = Jac(A, b, x0, e)
+    x = x0
+    N = diag(diag(A)) 
+    Ninversa = inv(N)
+    xk = Ninversa*((N-A)*x0 + b)
+    count = 1
+    
+    while abs(norm(A*x-b)) > e
+        x = Ninversa*((N-A)*xk + b)
+        xk = x
+        count = count + 1
+    end
+    //disp(count)
+    y = x
+endfunction
+
+// SOR CON MATRICES
+
+function y = SOR(A, b, x0, e, w)
+    // A: matriz del sistema
+    // b: vector del sistema
+    // x0: vector inicial
+    // e: tolerancia
+    // w: parámetro de relajación (0 < w < 2)
+
+    x = x0
+    D = diag(diag(A))
+    L = tril(A) - D
+    U = triu(A) - D
+
+    // matriz de iteración y vector constante
+    N = D + w*L
+    Ninversa = inv(N)
+
+    xk = Ninversa * (w*b - ((w*U + (w-1)*D) * x0))
+    count = 1
+
+    while norm(A*x - b) > e
+        x = Ninversa * (w*b - ((w*U + (w-1)*D) * xk))
+        xk = x
+        count = count + 1
+    end
+
+    //disp(count)
+    y = x
+endfunction
+
