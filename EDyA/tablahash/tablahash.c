@@ -13,7 +13,7 @@ typedef struct {
  * Estructura principal que representa la tabla hash.
  */
 struct _TablaHash {
-  CasillaHash *elems;
+  CasillaHash* elems;
   unsigned numElems;
   unsigned capacidad;
   FuncionCopiadora copia;
@@ -106,7 +106,7 @@ void tablahash_insertar(TablaHash tabla, void *dato) {
  * Retorna el dato de la tabla que coincida con el dato dado, o NULL si el dato
  * buscado no se encuentra en la tabla.
  */
-void *tablahash_buscar(TablaHash tabla, void *dato) {
+void* tablahash_buscar(TablaHash tabla, void *dato) {
 
   // Calculamos la posicion del dato dado, de acuerdo a la funcion hash.
   unsigned idx = tabla->hash(dato) % tabla->capacidad;

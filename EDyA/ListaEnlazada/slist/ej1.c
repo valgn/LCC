@@ -102,7 +102,7 @@ int stringsubcadena(char *str1, char *str2)
         }
         else
         {
-            i++;
+            i = i - j + 1;
             j = 0;
         }
     }
@@ -158,12 +158,11 @@ typedef struct
 ArregloEnteros* arreglos_enteros_crear(int capacidad){
     ArregloEnteros* arreglo = (ArregloEnteros*)malloc(sizeof(ArregloEnteros));
 
-    arreglo->direccion = (int*)malloc(sizeof(capacidad * sizeof(int)));
+    arreglo->direccion = (int*)malloc(capacidad * sizeof(int));
 
     arreglo->capacidad = capacidad;
 
-    return arreglo;
-    
+    return arreglo;    
 }
 
 void arreglo_enteros_destruir(ArregloEnteros* arreglo){
@@ -210,27 +209,27 @@ void arregloenterosinsertar(ArregloEnteros* arreglo, int pos, int dato){
 
 int main()
 {
-    float arr1[] = {-1.0, 2.2, 2.9, 3.1, 3.5};
-    float arr2[] = {-1.0, 2.2, 2.9, 3.1};
-    char cadena[] = "Hola Mund";
+    // float arr1[] = {-1.0, 2.2, 2.9, 3.1, 3.5};
+    // float arr2[] = {-1.0, 2.2, 2.9, 3.1};
+    // char cadena[] = "Hola Mund";
     // printf("%d",stringcompare("azal","azul"));
     // printf("%d",strcmp("aaaaa","b"));
-    // printf("%d",stringsubcadena("holchachau","chau"));
+    printf("%d\n",stringsubcadena("12123","123"));
     // char res[50] = "hola";
     // char *arr[20] = {"tincho", "como", "estas"};
     // char sep[] = "/";
     // stringunir(arr, 3, sep, res);
     // printf("%s", res);
 
-    ArregloEnteros* arr = arreglos_enteros_crear(5);
-    arr->direccion[0] = 1;
-    arr->direccion[1] = 2;
-    arr->direccion[2] = 3;
-    arr->direccion[3] = 4;
-    arr->direccion[4] = 5;
+    // ArregloEnteros* arr = arreglos_enteros_crear(5);
+    // arr->direccion[0] = 1;
+    // arr->direccion[1] = 2;
+    // arr->direccion[2] = 3;
+    // arr->direccion[3] = 4;
+    // arr->direccion[4] = 5;
     
-    arregloenterosinsertar(arr, 1,5);
-    arreglo_enteros_imprimir(arr);
+    // arregloenterosinsertar(arr, 1,5);
+    // arreglo_enteros_imprimir(arr);
     
 
     

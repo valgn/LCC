@@ -104,7 +104,7 @@ void merge(int* a, int left, int medio, int right){
 void mergesort(int* a, int left, int right){
     if(left < right){
         int medio = (left + right) / 2;
-        mergesort(a, left, medio);
+        mergesort(a, left, medio); // [4,2,1,3] 
         mergesort(a, medio+1, right);
 
         merge(a, left, medio, right);
@@ -138,6 +138,31 @@ int particionar(int* a,int len, int p){
     return j;
 }
 
+
+
+
+
+void qisort(int* a, int len){
+    if(len < 2){
+        return;
+    }
+    int p = a[len-1]; //ultimo elemento
+
+    int pos = particionar(a, len-1 , p);  
+
+    int temp = a[pos];
+    a[pos] = a[len - 1];
+    a[len - 1] = temp;
+
+
+
+    qisort(a, pos);
+    qisort(a+pos+1, len-pos-1);
+   
+
+}
+
+
 void particion3ways(int* arr, int len, int pivote, int* finMenores, int* inicioMayores){
     int menor = 0;
     int igual = 0;
@@ -164,28 +189,6 @@ void particion3ways(int* arr, int len, int pivote, int* finMenores, int* inicioM
     }
     *finMenores = menor;
     *inicioMayores = mayor;
-}
-
-
-
-void qisort(int* a, int len){
-    if(len < 2){
-        return;
-    }
-    int p = a[len-1]; //ultimo elemento
-
-    int pos = particionar(a, len-1 , p);  
-
-    int temp = a[pos];
-    a[pos] = a[len - 1];
-    a[len - 1] = temp;
-
-
-
-    qisort(a, pos);
-    qisort(a+pos+1, len-pos-1);
-   
-
 }
 
 void qisort3ways(int* a, int len){

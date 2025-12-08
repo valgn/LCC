@@ -13,7 +13,7 @@ typedef enum {
   BTREE_RECORRIDO_POST
 } BTreeOrdenDeRecorrido;
 
-typedef struct _BTNodo *BTree;
+typedef struct _BTNodo* BTree;
 
 /**
  * Devuelve un arbol vacío.
@@ -63,6 +63,16 @@ void santinobisutti(BTree arbolete, FuncionVisitante visit, int level);
 void btree_recorrer_bfs(BTree arbol, FuncionVisitante visit);
 
 BTree mirror(BTree arbol);
+
+void nodestruye(void* dato);
+void bfs(BTree arbol, FuncionVisitante visit);
+// Cola cola_crear();
+// int cola_vacia(Cola cola);
+// void cola_destruir(Cola cola, FuncionDestructora destroy);
+// void enqueue(Cola cola, void* dato);
+// void* dequeue(Cola cola);
+// void pila_destruir(Pila *pila, FuncionDestructora destroy);
+
 
 
 #endif /* __BTREE_H__ */

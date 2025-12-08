@@ -27,26 +27,33 @@ void pila_apilar(GPila pila, void* dato, FuncionCopia copy){
 }
 
 
-void pila_desapilar(GPila pila){
-    GList temp = pila->lista;
-    pila->lista = pila->lista->next;
-    
-    free(temp);
+void* pila_desapilar(GPila pila){ 
+    if (gpila_es_vacia(pila)) return NULL;
 
+    GList temp = pila->lista;
+    void* dato = temp->data; // Rescatamos el dato
+    
+    pila->lista = pila->lista->next; // Desenganchamos
+    
+    free(temp); // Solo liberamos el nodo (GNode)
+    
+    return dato; // Devolvemos el dato VIVO al usuario
 }
 
-GList dar_vuelta(GList lista, FuncionCopia copy){
-    GPila pila = crear_gpila();
-    pila->lista = lista;
+GList dar_vuelta(GList lista, FuncionCopia copy, FuncionDestructora destroy) {
+    // 1. Creamos la nueva lista vacía
+    GList nueva = glist_crear();
 
-    GList nuevaLista = glist_crear();
-
-    for(;(!gpila_es_vacia(pila));){
-        glist_agregar_inicio(&nuevaLista, pila_tope(pila), copy);
-        pila_desapilar(pila);
-
+    // 2. Recorremos la original hacia adelante
+    for (GNode* temp = lista; temp != NULL; temp = temp->next) {
+        // Al insertar siempre al INICIO, invertimos el orden naturalmente
+        glist_agregar_inicio(&nueva, temp->data, copy);
     }
-    return nuevaLista;
+
+    // 3. Destruimos la original (porque tu main espera que esta función consuma la lista vieja)
+    glist_destruir(lista, destroy);
+
+    return nueva;
 }
 
 void pila_imprimir(GPila pila, FuncionVisitante visit){

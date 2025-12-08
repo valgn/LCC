@@ -4,7 +4,7 @@
 #define MAX 10
 
 typedef struct {
-    int* arr;
+    int arr[MAX];
     int primero;
     int ultimo;
     int cantidad; 
@@ -12,7 +12,7 @@ typedef struct {
 
 Cola* queueCreate() {
     Cola* cola = malloc(sizeof(Cola));
-    cola->arr = malloc(sizeof(int) * MAX);
+    //cola->arr = malloc(sizeof(int) * MAX);
     cola->primero = 0;
     cola->ultimo = -1;
     cola->cantidad = 0;
@@ -21,7 +21,7 @@ Cola* queueCreate() {
 
 void queueDestroy(Cola* cola) {
     if (cola) {
-        free(cola->arr);
+       // free(cola->arr);
         free(cola);
     }
 }
@@ -51,19 +51,12 @@ void recorrerCola(Cola* cola) {
     printf("\n");
 }
 
-void enqueue(Cola** cola, int dato) {
-    if (*cola == NULL) {
-        *cola = queueCreate();
-    }
-    
-    if (cola_esta_llena(*cola)) {
-        printf("La cola está llena\n");
-        return;
-    }
+void enqueue(Cola* cola, int dato) {
+    if (cola_esta_llena(cola)) return; // O manejar error
 
-    (*cola)->ultimo = ((*cola)->ultimo + 1) % MAX;
-    (*cola)->arr[(*cola)->ultimo] = dato;
-    (*cola)->cantidad++;
+    cola->ultimo = (cola->ultimo + 1) % MAX;
+    cola->arr[cola->ultimo] = dato;
+    cola->cantidad++;
 }
 
 int dequeue(Cola* cola) {
@@ -76,20 +69,15 @@ int dequeue(Cola* cola) {
     cola->primero = (cola->primero + 1) % MAX;
     cola->cantidad--;
     
-    if (cola->cantidad == 0) {
-        cola->primero = 0;
-        cola->ultimo = -1;
-    }
-    
     return dato;
 }
 
 int main() {
-    Cola* cola = NULL;
-    enqueue(&cola, 1);
-    enqueue(&cola, 2);
-    enqueue(&cola, 3);
-    enqueue(&cola, 4);
+    Cola* cola = queueCreate();
+    enqueue(cola, 1);
+    enqueue(cola, 2);
+    enqueue(cola, 3);
+    enqueue(cola, 4);
     
     printf("Cola: ");
     recorrerCola(cola);

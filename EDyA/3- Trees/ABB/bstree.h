@@ -18,10 +18,10 @@ struct _BST_Nodo {
 };
 
 
-typedef struct _BST_Nodo *BSTree;
+typedef struct _BST_Nodo* BSTree;
 
 
-BSTree crear_nodo(void *dato);
+BSTree crear_nodo(void *dato, FuncionCopiadora copy);
 
 /**
  * Retorna un arbol de busqueda binaria vacio.
@@ -54,6 +54,6 @@ void bstree_recorrer(BSTree, BSTreeRecorrido, FuncionVisitanteExtra,
 BSTree bstree_eliminar(BSTree arbol, void *dato, FuncionComparadora comp, FuncionDestructora destroy, FuncionCopiadora copy);
 
 void* bstree_k_esimo_menor(BSTree arbol, int k);
-int btree_validar(BSTree arbol, FuncionComparadora comp);
+int btree_validar(BSTree arbol, FuncionComparadora comp, void* max, void* min);
 
 #endif //__BSTREE_H__

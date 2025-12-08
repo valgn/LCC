@@ -11,9 +11,9 @@
  */
 
 
-BSTree crear_nodo(void *dato) {
+BSTree crear_nodo(void *dato, FuncionCopiadora copy) {
     BSTree nodo = malloc(sizeof(struct _BST_Nodo));
-    nodo->dato = dato;
+    nodo->dato = copy(dato);
     nodo->izq = NULL;
     nodo->der = NULL;
     return nodo;
@@ -108,7 +108,7 @@ BSTree bstree_eliminar(BSTree arbol, void *dato, FuncionComparadora comp, Funcio
         hijo = arbol->izq;
       }
       else hijo = arbol->der;
-  
+      free(arbol);
       return hijo;
     }
 
@@ -151,19 +151,8 @@ void* bstree_k_esimo_menor(BSTree arbol, int k){
   return bstree_k_esimo_menor_aux(arbol, &k);
 }
 
-int btree_validar(BSTree arbol, FuncionComparadora comp){
+int btree_validar(BSTree arbol, FuncionComparadora comp, void* max, void* min){
   if (arbol == NULL) return 1;
-
-  // Validar hijo izquierdo
-  if (arbol->izq != NULL && comp(arbol->dato, arbol->izq->dato) <= 0) {
-    return 0; // El dato del hijo izquierdo no es menor
-  }
-
-  // Validar hijo derecho
-  if (arbol->der != NULL && comp(arbol->der->dato, arbol->dato) <= 0) {
-    return 0; // El dato del hijo derecho no es mayor
-  }
-
-  // Recursivamente validar los subárboles
-  return btree_validar(arbol->izq, comp) && btree_validar(arbol->der, comp);
+  if ((max != NULL && (comp(arbol->dato, max) >= 0)) || (min != NULL && (comp(arbol->dato, min) <= 0))) return 0;
+  return btree_validar(arbol->izq, comp, arbol->dato, min) && btree_validar(arbol->der, comp, max, arbol->dato);
 }

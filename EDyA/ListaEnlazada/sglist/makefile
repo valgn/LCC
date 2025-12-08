@@ -2,7 +2,7 @@
 # ejecutar desde la terminal escribiendo "make" 
 # genera automáticamente el ejecutable del programa
 
-FLAGS = -Wall -Wextra -Werror -std=c99
+FLAGS = -Wall -Wextra -Werror -std=c99 -g
 
 programa: main.o sglist.o contacto.o
 	$(CC) -o $@ $^ $(FLAGS)

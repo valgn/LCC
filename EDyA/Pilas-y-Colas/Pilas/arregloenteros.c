@@ -21,11 +21,11 @@ void arreglo_enteros_destruir(ArregloEnteros *arreglo)
 
 int arreglo_enteros_leer(ArregloEnteros *arreglo, int pos)
 {
-    if (pos < 0 || pos > arreglo->capacidad)
+    if (pos < 0 || pos >= arreglo->capacidad)
     {
         perror("ERROR");
     }
-    return *(arreglo->direccion + pos);
+    return *(arreglo->direccion + pos*4);
 }
 
 void arreglo_enteros_escribir(ArregloEnteros *arreglo, int pos, int dato)

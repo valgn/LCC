@@ -12,6 +12,7 @@
   */
 static void* copiar_puntero_entero(void* i) {
   int* p = malloc(sizeof(int));
+  assert(p != NULL);
   *p = *(int*)i;
   return p;
 }

@@ -27,12 +27,12 @@ static void imprimir_cadena(void *dato, __attribute__((unused)) void *extra) {
 }
 
 int main() {
-    BSTree raiz = crear_nodo("mango");
+    BSTree raiz = crear_nodo("mango", (FuncionCopiadora)copiar_cadena);
 
-    raiz->izq = crear_nodo("banana");
-    raiz->der = crear_nodo("pera");
+    raiz->izq = crear_nodo("banana", (FuncionCopiadora)copiar_cadena);
+    raiz->der = crear_nodo("pera", (FuncionCopiadora)copiar_cadena);
 
-    raiz->der->izq = crear_nodo("apple");  // Este nodo rompe la propiedad ABB
+    raiz->der->izq = crear_nodo("apple", (FuncionCopiadora)copiar_cadena);  // Este nodo rompe la propiedad ABB
 
   char *palabras[N_PALABRAS] = {"gato",      "perro",    "casa",     "persona",
                                 "parque",    "arbol",    "edificio", "calle",
@@ -50,7 +50,7 @@ int main() {
   printf("Recorrido inorden: ");
   bstree_recorrer(arbol, BTREE_RECORRIDO_IN, imprimir_cadena, NULL);
   puts("");
-  printf("%d", btree_validar(raiz, comparar_cadena));
+  printf("%d", btree_validar(raiz, comparar_cadena, NULL, NULL));
 
 
   //arbol = bstree_eliminar(arbol, "casa", (FuncionComparadora)comparar_cadena, (FuncionDestructora)destruir_cadena, (FuncionCopiadora)copiar_cadena);
@@ -71,6 +71,7 @@ int main() {
 
   // Destruir arbol
   bstree_destruir(arbol, destruir_cadena);
+  bstree_destruir(raiz, destruir_cadena);
 
   return 0;
 }

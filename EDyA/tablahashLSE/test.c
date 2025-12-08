@@ -10,94 +10,75 @@
 /**
  * Caso de prueba: Tabla hash para contactos
  */
+#define CAP_TEST 5 
+
 int main() {
+    printf("=== INICIO TEST DE REHASHING ===\n");
 
-  // Iniciar tabla hash
-  TablaHash tabla = tablahash_crear(
-      CAPACIDAD_INICIAL, (FuncionCopiadora)contacto_copia,
-      (FuncionComparadora)contacto_comparar,
-      (FuncionDestructora)contacto_destruir, (FuncionHash)contacto_heashear);
+    // 1. Crear tabla diminuta
+    TablaHash tabla = tablahash_crear(CAP_TEST, 
+                                      (FuncionCopiadora)contacto_copia, 
+                                      (FuncionComparadora)contacto_comparar, 
+                                      (FuncionDestructora)contacto_destruir, 
+                                      (FuncionHash)contacto_heashear);
 
-  // Contactos
-  Contacto *agenda[6];
-  agenda[0] = contacto_crear("Pepe Argento", "3412695452", 61);
-  agenda[1] = contacto_crear("Moni Argento", "3412684759", 60);
-  agenda[2] = contacto_crear("Coqui Argento", "3415694286", 32);
-  agenda[3] = contacto_crear("Paola Argento", "3416259862", 29);
-  agenda[4] = contacto_crear("Maria Elena Fuseneco", "3416874594", 59);
-  agenda[5] = contacto_crear("Dardo Fuseneco", "3416894526", 64);
+    printf("Capacidad Inicial: %d\n", tablahash_capacidad(tabla));
+    assert(tablahash_capacidad(tabla) == CAP_TEST);
 
-  // Insertar
-  printf("Insercion:\n");
-  for (int i = 0; i < 6; ++i) {
-    printf("Insertando el contacto: ");
-    contacto_imprimir(agenda[i]);
-    printf(" en la casilla %d.\n",
-           contacto_heashear(agenda[i]) % tablahash_capacidad(tabla));
-    int nElems = tablahash_nelems(tabla);
-    tablahash_insertar(tabla, agenda[i]);
-    if (tablahash_nelems(tabla) == nElems)
-      printf("\tInsercion fallida: Colision.\n");
-    else
-      printf("\tInsercion exitosa.\n");
-  }
+    // Datos de prueba (6 contactos para desbordar una tabla de 5)
+    // Nombres cortos para simplificar
+    char* nombres[] = {"Ana", "Beto", "Carla", "Dani", "Eli", "Fran"};
+    Contacto* contactos[6];
 
-  // Buscar
-  printf("\nBusqueda:\n");
-  for (int i = 0; i < 6; ++i) {
-    printf("Buscando el contacto: ");
-    contacto_imprimir(agenda[i]);
-    puts("");
-    Contacto *ret = tablahash_buscar(tabla, agenda[i]);
-    if (ret != NULL)
-      printf("\tSe encuentra en la tabla.\n");
-    else
-      printf("\tNo se encuentra en la tabla.\n");
-  }
+    // 2. Inserción con monitoreo
+    for (int i = 0; i < 6; i++) {
+        contactos[i] = contacto_crear(nombres[i], "111", 20 + i);
+        
+        printf("Insertando %s... ", nombres[i]);
+        tablahash_insertar(tabla, contactos[i]);
+        
+        // Medimos factor de carga actual para ver qué pasa
+        int cap_actual = tablahash_capacidad(tabla);
+        int num_elems = tablahash_nelems(tabla);
+        float carga = (float)num_elems / cap_actual;
+        
+        printf("[N: %d | Cap: %d | Carga: %.2f]\n", num_elems, cap_actual, carga);
 
-  // Eliminar
-  printf("\nEliminacion:\n");
-  for (int i = 5; i > 2; --i) {
-    printf("Eliminando el contacto: ");
-    contacto_imprimir(agenda[i]);
-    puts("");
-    tablahash_eliminar(tabla, agenda[i]);
-  }
+        // CHEQUEO DE REHASH:
+        // Si acabamos de insertar el 4to elemento en capacidad 5, la carga era 0.8.
+        // Si tu lógica funciona, la capacidad debería haber saltado AHORA.
+        if (i == 3 && cap_actual > CAP_TEST) { 
+             printf("\t>>> ¡REHASH DETECTADO! La tabla creció <<<\n");
+        }
+    }
 
-  // Buscar
-  printf("\nBusqueda:\n");
-  for (int i = 0; i < 6; ++i) {
-    printf("Buscando el contacto: ");
-    contacto_imprimir(agenda[i]);
-    puts("");
-    Contacto *ret = tablahash_buscar(tabla, agenda[i]);
-    if (ret != NULL)
-      printf("\tSe encuentra en la tabla.\n");
-    else
-      printf("\tNo se encuentra en la tabla.\n");
-  }
+    // 3. Verificación Post-Rehash (La prueba de fuego)
+    printf("\n=== VERIFICANDO INTEGRIDAD DE DATOS ===\n");
+    printf("Capacidad Final: %d\n", tablahash_capacidad(tabla));
+    
+    // La capacidad debería ser mayor a la inicial (ej: 10 u 11)
+    assert(tablahash_capacidad(tabla) > CAP_TEST); 
 
-  // Sobrescribir un contacto
-  Contacto *nuevoContacto = contacto_crear("Pepe Argento", "3410000000", 71);
-  printf("\nSobrescribiendo el contacto: ");
-  contacto_imprimir(agenda[0]);
-  printf("\n\tpor: ");
-  contacto_imprimir(nuevoContacto);
-  puts("");
-  tablahash_insertar(tabla, nuevoContacto);
-  // Chequeamos que se haya sobrescrito
-  Contacto *ret = tablahash_buscar(
-      tabla, agenda[0]); // Es equivalente a buscar nuevoContacto porque se
-                         // compara por nombre
-  printf("El nuevo contacto es: ");
-  contacto_imprimir(ret);
-  puts("");
+    int encontrados = 0;
+    for (int i = 0; i < 6; i++) {
+        // Buscamos usando el contacto original. 
+        // Si el rehash falló moviendo punteros, esto devolverá NULL o crasheará.
+        Contacto* buscado = tablahash_buscar(tabla, contactos[i]);
+        
+        if (buscado != NULL) {
+            printf("OK: %s encontrado.\n", buscado->nombre);
+            encontrados++;
+        } else {
+            printf("ERROR FATAL: %s se perdió en el rehash.\n", nombres[i]);
+        }
+    }
 
-  // Liberar memoria
-  tablahash_destruir(tabla);
-  for (int i = 0; i < 6; ++i)
-    contacto_destruir(agenda[i]);
-  contacto_destruir(nuevoContacto);
+    assert(encontrados == 6);
+    printf("\n>>> TEST PASADO: Todos los datos sobrevivieron a la mudanza.\n");
 
-  return 0;
+    // Limpieza
+    tablahash_destruir(tabla);
+    for(int i=0; i<6; i++) contacto_destruir(contactos[i]);
+
+    return 0;
 }

@@ -45,6 +45,8 @@ FuncionComparadora comp);
 
 void* bheap_eliminar_retornador(BHeap heap);
 
-int* heapsort(int* arr, int n, FuncionCopiadora copy, FuncionComparadora comp);
+int* heapsort(int* arr, int n, FuncionCopiadora copy, FuncionComparadora comp, FuncionDestructora destroy);
+
+void heapsort2(void** arr, int len, FuncionComparadora comp);
 
 #endif

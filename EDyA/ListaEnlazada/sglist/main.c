@@ -2,6 +2,15 @@
 #include "contacto.h"
 #include <stdio.h>
 #include <stdlib.h> 
+#include <string.h>
+
+int comparar_contacto(Contacto* contacto, Contacto* contacto2){
+    return(strcmp(contacto->nombre, contacto2->nombre));
+}
+int igual_contacto(Contacto* contacto, Contacto* contacto2){
+    return (strcmp(contacto->nombre, contacto2->nombre)==0) && (strcmp(contacto->tel, contacto2->tel)==0) 
+        && (contacto->edad == contacto2->edad);
+}
 
 int main(){
 
@@ -20,10 +29,10 @@ int main(){
         contacto_destruir(contactos[i]);
     }
     Contacto* c[1];
-    c[0] = contacto_crear("TinchoKaiser", "341615390", 19);
+    c[0] = contacto_crear("tinchokaiser", "3416894526", 64);
 
     printf("%d\n", sglist_buscar(lista, c[0], (FuncionComparadora)igual_contacto));
-
+    contacto_destruir(c[0]);
     printf("Lista:\n");
     sglist_recorrer(lista, (FuncionVisitante)contacto_imprimir);
 

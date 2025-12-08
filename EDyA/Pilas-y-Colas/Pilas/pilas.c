@@ -11,7 +11,7 @@ Pila pila_crear(int capacidad){
 }
 
 void pila_destruir(Pila pila){
-    free(pila->arr);
+    arreglo_enteros_destruir(pila->arr);
     free(pila);
 }
 

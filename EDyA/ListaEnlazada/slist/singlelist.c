@@ -32,7 +32,7 @@ int slist_length(struct Snodo* head){
     return i;
 }
 
-void* slist_concatenar(struct Snodo** head, struct Snodo** head2){
+void slist_concatenar(struct Snodo** head, struct Snodo** head2){
     struct Snodo* temp = (*head);
 
     for(;temp->next!=NULL;temp = temp->next);

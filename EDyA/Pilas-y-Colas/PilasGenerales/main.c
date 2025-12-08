@@ -27,15 +27,16 @@ int main() {
         pila_apilar(pila, contactos[i], (FuncionCopia)contacto_copia);
     }
 
-    printf("%d", gpila_es_vacia(pila));
+    //printf("%d", gpila_es_vacia(pila));
 
-    pila_desapilar(pila);
-    pila_desapilar(pila);
-    pila_desapilar(pila);
+    Contacto* c1 = pila_desapilar(pila); // dard
+    Contacto* c2 = pila_desapilar(pila); // maria
+    Contacto* c3 = pila_desapilar(pila); // paola
     pila_apilar(pila, contactos[2], (FuncionCopia)contacto_copia);
     pila_apilar(pila, contactos[2], (FuncionCopia)contacto_copia);
     pila_apilar(pila, contactos[2], (FuncionCopia)contacto_copia);
-
+    pila_imprimir(pila, (FuncionVisitante)contacto_imprimir);
+    printf("\n");
 
     GList lista = glist_crear();
     for(int i = 0; i < 6; i++){
@@ -45,10 +46,19 @@ int main() {
     printf("\n");
     printf("\n");
 
-    lista = dar_vuelta(lista, (FuncionCopia)contacto_copia);
+    lista = dar_vuelta(lista, (FuncionCopia)contacto_copia, (FuncionDestructora)contacto_destruir);
     
 
     glist_recorrer(lista, (FuncionVisitante)contacto_imprimir);
+
+    for (int i = 0; i < 6; ++i) {
+        contacto_destruir(contactos[i]);
+    }
+    contacto_destruir(c1);
+    contacto_destruir(c2);
+    contacto_destruir(c3),
+    glist_destruir(lista, (FuncionDestructora)contacto_destruir);
+    gpila_destruir(pila, (FuncionDestructora)contacto_destruir);
     printf("\n");
     printf("\n");
     return 0;

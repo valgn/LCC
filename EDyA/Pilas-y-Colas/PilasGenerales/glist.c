@@ -39,6 +39,8 @@ void glist_agregar_inicio(GList *list, void *data, FuncionCopia copy) {
   
 }
 
+
+
 /**
  * Recorrido de la lista, utilizando la funcion pasada.
  */

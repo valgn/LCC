@@ -11,7 +11,7 @@ typedef struct _GNode {
   struct _GNode *next;
 } GNode;
 
-typedef GNode *GList;
+typedef GNode* GList;
 
 /**
  * Devuelve una lista vacía.

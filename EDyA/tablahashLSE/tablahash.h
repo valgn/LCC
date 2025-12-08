@@ -51,4 +51,8 @@ void *tablahash_buscar(TablaHash tabla, void *dato);
  */
 void tablahash_eliminar(TablaHash tabla, void *dato);
 
+void rehashear(TablaHash vieja);
+
+float factor_carga(TablaHash hash);
+
 #endif /* __TABLAHASH_H__ */

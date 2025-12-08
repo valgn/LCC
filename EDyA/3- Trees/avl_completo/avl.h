@@ -12,7 +12,7 @@ typedef enum {
   AVL_RECORRIDO_POST /** Postorden */
 } AVLRecorrido;
 
-typedef struct _AVL *AVL;
+typedef struct _AVL* AVL;
 
 /**
  * Retorna un arbol AVL vacio

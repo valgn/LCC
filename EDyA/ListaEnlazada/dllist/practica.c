@@ -33,6 +33,7 @@ DList* meterultimo(DList* lista, int dato){
     DNodo* nuevonodo = malloc(sizeof(DNodo));
     nuevonodo->sig = NULL;
     nuevonodo->ant = lista->ultimo;
+    lista->ultimo = nuevonodo;
     nuevonodo->dato = dato;
     return lista;
 }

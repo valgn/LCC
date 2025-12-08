@@ -31,14 +31,14 @@ SGList sglist_insertar(SGList lista, void* dato, FuncionCopia c, FuncionComparad
     nuevo->next = NULL;
 
     
-    if (lista == NULL || comp(dato, lista->data)) {
+    if (lista == NULL || comp(dato, lista->data)<0 ) {
         nuevo->next = lista;
         return nuevo;
     }
 
     
     GNode* actual = lista;
-    while (actual->next != NULL && !comp(dato, actual->next->data)) {
+    while (actual->next != NULL && comp(dato, actual->next->data) >= 0) {
         actual = actual->next;
     }
 
@@ -67,7 +67,7 @@ SGList sglist_arr(void **arr, int len, FuncionCopia f, FuncionComparadora comp){
     SGList lista = sglist_crear();
 
     for(int i = 0; i < len; i++){
-        lista = sglist_insertar(lista, arr[0], f, comp);
+        lista = sglist_insertar(lista, arr[i], f, comp);
     }
 
     return lista;

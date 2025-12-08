@@ -20,9 +20,9 @@ void* pila_tope(GPila pila);
 
 void pila_apilar(GPila pila, void* dato, FuncionCopia copy);
 
-void pila_desapilar(GPila pila);
+void* pila_desapilar(GPila pila);
 
-GList dar_vuelta(GList lista, FuncionCopia copy);
+GList dar_vuelta(GList lista, FuncionCopia copy, FuncionDestructora destroy);
 
 void pila_imprimir(GPila pila, FuncionVisitante visit);
 

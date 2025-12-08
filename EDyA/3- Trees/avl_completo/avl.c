@@ -33,7 +33,7 @@ typedef struct _AVL_Nodo
  */
 struct _AVL
 {
-  AVL_Nodo *raiz;
+  AVL_Nodo* raiz;
   FuncionCopiadora copia;
   FuncionComparadora comp;
   FuncionDestructora destr;

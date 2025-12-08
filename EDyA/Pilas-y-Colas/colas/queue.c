@@ -4,9 +4,11 @@
 #include "queue.h"
 
 Cola cola_crear() {
-    Cola cola = malloc(sizeof(Cola));
-    cola->frente = cola->ultimo = NULL;
-    return cola;
+    // Pedimos tamaño del STRUCT, no del puntero
+    Cola c = malloc(sizeof(struct _ColaRep)); 
+    c->frente = NULL;
+    c->ultimo = NULL;
+    return c;
 }
 
 void cola_destruir(Cola cola, FuncionDestructora destroy) {
@@ -46,9 +48,18 @@ void encolar(Cola cola, void* dato, FuncionCopia copy) {
 }
 
 void* desencolar(Cola cola){
+    if (cola_es_vacia(cola)) return NULL; // Validación
+
     GNode* temp = cola->frente;
-    cola->frente = cola->frente->next;
     void* dato = temp->data;
+    
+    cola->frente = cola->frente->next;
+    
+    // CORRECCIÓN: Si la cola quedó vacía, limpiamos ultimo también
+    if (cola->frente == NULL) {
+        cola->ultimo = NULL;
+    }
+
     free(temp);
     return dato;
 }

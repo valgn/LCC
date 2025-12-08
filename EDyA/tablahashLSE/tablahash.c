@@ -94,12 +94,53 @@ void tablahash_destruir(TablaHash tabla) {
   return;
 }
 
+
+// Corregir el tipo de retorno a float
+float factor_carga(TablaHash hash){
+  return (float)hash->numElems / hash->capacidad;
+}
+
+void rehashear(TablaHash vieja){
+  int viejacap = vieja->capacidad;
+  int nuevacap = viejacap * 2; // O el siguiente primo si te pones exquisito
+  
+  // 1. Crear el nuevo array de casillas
+  CasillaHash* nuevoarr = malloc(sizeof(CasillaHash) * nuevacap);
+  for(int i = 0; i < nuevacap; i++){
+    nuevoarr[i].cabezon = NULL;
+  }
+
+  // 2. Mover los nodos (Re-link)
+  for(int i = 0; i < viejacap; i++){
+    NodoHash* nodo = vieja->elems[i].cabezon;
+    while(nodo != NULL){
+      NodoHash* next = nodo->sig; // Guardamos referencia al siguiente
+      
+      // Recalculamos posición
+      unsigned newidx = vieja->hash(nodo->dato) % nuevacap;
+      
+      // Insertamos al principio de la nueva lista (O(1))
+      nodo->sig = nuevoarr[newidx].cabezon;
+      nuevoarr[newidx].cabezon = nodo; // <--- ¡LA LÍNEA QUE FALTABA!
+      
+      nodo = next;
+    }
+  } 
+
+  // 3. Liberar el array viejo y actualizar la estructura
+  free(vieja->elems);
+  vieja->capacidad = nuevacap;
+  vieja->elems = nuevoarr;
+}
+
 /**
  * Inserta un dato en la tabla, o lo reemplaza si ya se encontraba.
  * IMPORTANTE: La implementacion no maneja colisiones.
  */
 void tablahash_insertar(TablaHash tabla, void *dato) {
-
+  if(factor_carga(tabla) > 0.7){
+    rehashear(tabla);
+  }
   // Calculamos la posicion del dato dado, de acuerdo a la funcion hash.
   unsigned idx = tabla->hash(dato) % tabla->capacidad;
   NodoHash* nodo = tabla->elems[idx].cabezon;
@@ -167,3 +208,4 @@ void tablahash_eliminar(TablaHash tabla, void *dato) {
     nodo = nodo->sig;
   }
 }
+

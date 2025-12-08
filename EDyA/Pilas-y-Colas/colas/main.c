@@ -19,16 +19,21 @@ int main(){
 
     for (int i = 0; i < 6; i++) {
     encolar(cola, contactos[i], (FuncionCopia)contacto_copia);
+    contacto_destruir(contactos[i]);
     }
 
-    Contacto dequeue = *(Contacto*)desencolar(cola);
-    contacto_imprimir(&dequeue);
+    Contacto* dequeue = (Contacto*)desencolar(cola);
+    contacto_imprimir(dequeue);
+    
 
-    Contacto dequeue2 = *(Contacto*)desencolar(cola);
-    contacto_imprimir(&dequeue2);
-    encolar(cola, &dequeue, (FuncionCopia)contacto_copia);
+    Contacto* dequeue2 = (Contacto*)desencolar(cola);
+    contacto_imprimir(dequeue2);
+    encolar(cola, dequeue, (FuncionCopia)contacto_copia);
     printf("\n");
     cola_imprimir(cola, (FuncionVisitante)contacto_imprimir);
+    contacto_destruir(dequeue);
+    contacto_destruir(dequeue2);
+    cola_destruir(cola, (FuncionDestructora)contacto_destruir);
 
 
     return 0;
