@@ -75,6 +75,9 @@ void tablahash_destruir(TablaHash tabla) {
   return;
 }
 
+
+
+
 /**
  * Inserta un dato en la tabla, o lo reemplaza si ya se encontraba.
  * IMPORTANTE: La implementacion no maneja colisiones.
