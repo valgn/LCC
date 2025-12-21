@@ -1,7 +1,7 @@
 #ifndef ___HYBRIDTABLE_H___
 #define ___HYBRIDTABLE_H___
 
-typedef void (*FuncionVisitante) (int dato);
+typedef void (*FuncionVisitante) (void* dato);
 typedef void *(*FuncionCopiadora)(void *dato);
 typedef int (*FuncionComparadora)(void *, void *);
 typedef void (*FuncionDestructora)(void *dato);

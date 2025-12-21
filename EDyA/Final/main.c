@@ -16,7 +16,7 @@ int comparar_enteros(void* d1, void* d2){
 }
 
 void* copiar_entero(void* dato){
-    int* val = malloc(sizeof(dato));
+    int* val = malloc(sizeof(int));
     assert(val != NULL);
     *val = *(int*)dato;
     return val;
@@ -32,7 +32,7 @@ unsigned hashear_entero(void* ent){
 
 int main(){
     HybridHash tabla = tablahash_crear(TABLE_CAP, copiar_entero, comparar_enteros, destruir_entero, hashear_entero);
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < 1000; i++){
         tablahash_insertar(tabla, &i);
     }
 
@@ -60,6 +60,8 @@ int main(){
         printf("No se encontro\n");
     }
     else imprimir_entero(busca);
+
+    printf("%d ", tabla->elems[0].cantidad);
 
     tabla_destruir(tabla);
     return 0;

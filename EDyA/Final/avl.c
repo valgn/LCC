@@ -79,8 +79,9 @@ static void* avl_nodo_buscar_retornar(AVL_Nodo* raiz, FuncionComparadora comp, v
   }
 }
 
-void* avl_retornar(AVL arbol, void* dato, FuncionComparadora comp){
-  return avl_nodo_buscar_retornar(arbol->raiz, dato, comp);
+void* avl_retornar(AVL arbol, void* dato, FuncionComparadora comp) {
+  // CORRECCIÓN: Pasar comp primero, dato después
+  return avl_nodo_buscar_retornar(arbol->raiz, comp, dato);
 }
 
 
@@ -164,11 +165,11 @@ static AVL_Nodo* avl_nodo_crear(void* dato, FuncionCopiadora copia) {
  * propiedad de los arboles AVL.
  */
 static AVL_Nodo* avl_nodo_insertar(AVL_Nodo* raiz, void* dato,
-  FuncionCopiadora copia, FuncionComparadora comp) {
+  FuncionCopiadora copia, FuncionComparadora comp, FuncionDestructora destroy) {
   if (raiz == NULL) // insertamos el nuevo elemento
     return avl_nodo_crear(dato, copia);
   else if (comp(dato, raiz->dato) < 0) { // el dato debe ir en el subarbol izq
-    raiz->izq = avl_nodo_insertar(raiz->izq, dato, copia, comp);
+    raiz->izq = avl_nodo_insertar(raiz->izq, dato, copia, comp, destroy);
     // chequear balance
     if (avl_nodo_factor_balance(raiz) == -2) {
       // casos 1 o 2
@@ -180,7 +181,7 @@ static AVL_Nodo* avl_nodo_insertar(AVL_Nodo* raiz, void* dato,
     return raiz;
   }
   else if (comp(raiz->dato, dato) < 0) { // el dato debe ir en el subarbol der
-    raiz->der = avl_nodo_insertar(raiz->der, dato, copia, comp);
+    raiz->der = avl_nodo_insertar(raiz->der, dato, copia, comp, destroy);
     if(avl_nodo_factor_balance(raiz) == 2){
       if(avl_nodo_factor_balance(raiz->der) == -1) raiz->der = avl_nodo_rotacion_simple_der(raiz->der);
       raiz = avl_nodo_rotacion_simple_izq(raiz);
@@ -189,11 +190,15 @@ static AVL_Nodo* avl_nodo_insertar(AVL_Nodo* raiz, void* dato,
     return raiz;
   }
 
-  else // no agregar elementos repetidos
+  else{
+    destroy(raiz->dato);
+    raiz->dato = copia(dato);
+    return raiz;
+  }
     return raiz;
 }
-void avl_insertar(AVL arbol, void* dato, FuncionCopiadora copy, FuncionComparadora comp) {
-  arbol->raiz = avl_nodo_insertar(arbol->raiz, dato, copy, comp);
+void avl_insertar(AVL arbol, void* dato, FuncionCopiadora copy, FuncionComparadora comp, FuncionDestructora destroy) {
+  arbol->raiz = avl_nodo_insertar(arbol->raiz, dato, copy, comp, destroy);
 }
 
 static AVL_Nodo* avl_nodo_rebalancear(AVL_Nodo* raiz){
@@ -210,6 +215,7 @@ static AVL_Nodo* avl_nodo_rebalancear(AVL_Nodo* raiz){
     raiz->altura = 1 + avl_nodo_max_altura_hijos(raiz);
     return raiz;
   }
+  return raiz;
 }
 
 static AVL_Nodo* eliminar_nodo(AVL_Nodo* raiz,void* dato ,FuncionComparadora comp, FuncionCopiadora copy, FuncionDestructora destroy){
@@ -237,7 +243,7 @@ static AVL_Nodo* eliminar_nodo(AVL_Nodo* raiz,void* dato ,FuncionComparadora com
       raiz->dato = sucesor->dato;
       sucesor->dato = copia_dato;
 
-      raiz = eliminar_nodo(sucesor, sucesor->dato, comp, copy, destroy);
+      raiz->der = eliminar_nodo(raiz->der, copia_dato, comp, copy, destroy);
     }
   }
   raiz->altura = 1 + avl_nodo_max_altura_hijos(raiz);

@@ -46,7 +46,7 @@ void* avl_retornar(AVL arbol, void* dato, FuncionComparadora comp);
  * Inserta un dato no repetido en el arbol, manteniendo la propiedad de los
  * arboles AVL.
  */
-void avl_insertar(AVL, void *, FuncionCopiadora copy, FuncionComparadora comp);
+void avl_insertar(AVL, void *, FuncionCopiadora copy, FuncionComparadora comp, FuncionDestructora destroy);
 
 /**
  * Retorna 1 si el arbol cumple la propiedad de los arboles AVL, y 0 en caso

@@ -71,22 +71,15 @@ void* slist_retornar_dato(SList lista, void* dato, FuncionComparadora comp){
 
 SList slist_eliminar(SList lista, void* dato, FuncionComparadora comp, FuncionDestructora destroy){
   SNodo* temp = lista;
-  while(temp != NULL && temp->sig != NULL && comp(temp->sig->dato, dato) != 0) temp = temp->sig;
-  if(temp->sig == NULL){ // No se encontro el dato
-    if(comp(temp->dato, dato) == 0){
-      destroy(temp->dato);
-      free(temp);
-      return NULL;
-    }
-    return lista;
+  SNodo* ant = NULL;
+  while(temp != NULL && comp(temp->dato, dato) != 0){
+    ant = temp;
+    temp = temp->sig;
   }
-  else{
-  SNodo* sig = temp->sig;
-  temp->sig = temp->sig->sig;
-  destroy(sig->dato);
-  free(sig);
-  }
-  printf("Llego aca");
+  if(temp == NULL) return NULL;
+  ant->sig = temp->sig;
+  destroy(temp->dato);
+  free(temp);
   return lista;
 }
 
