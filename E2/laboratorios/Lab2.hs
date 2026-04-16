@@ -45,11 +45,9 @@ inorder (Node a b) = inorder(a) ++ inorder(b)
 
 -- 2) Dada las siguientes representaciones de árboles generales y de árboles binarios (con información en los nodos):
 
-data GTree a = EG | NodeG a [GTree a]
+data GTree a = EG | NodeG a [GTree a] deriving Show
 
-data BinTree a = EB | NodeB (BinTree a) a (BinTree a)
-
-
+data BinTree a = EB | NodeB (BinTree a) a (BinTree a) deriving Show
 
 
 
@@ -94,14 +92,20 @@ garbol = NodeG 10 [
 
 
 g2bt :: GTree a -> BinTree a
-g2bt EG = EB -- Caso de vacio
-g2bt (NodeG a []) = NodeB EB a EB -- Caso una sola raiz
-g2bt (NodeG a (x:xs)) = NodeB (g2bt x) a  EB
+g2bt EG = EB
+g2bt (NodeG x hijos) = NodeB (listaABin hijos) x EB
+
+listaABin :: [GTree a] -> BinTree a
+listaABin [] = EB
+listaABin (EG : hermanos) = listaABin hermanos
+listaABin (NodeG x hijos : hermanos) = NodeB (listaABin hijos) x (listaABin hermanos)
 
 
 inorderBin :: BinTree a -> [a]
 inorderBin EB = []
 inorderBin (NodeB a b c) = inorderBin a ++ [b] ++ inorderBin c
+
+
 -- 3) Utilizando el tipo de árboles binarios definido en el ejercicio anterior, definir las siguientes funciones: 
 {-
    a) dcn, que dado un árbol devuelva la lista de los elementos que se encuentran en el nivel más profundo 
@@ -116,8 +120,30 @@ inorderBin (NodeB a b c) = inorderBin a ++ [b] ++ inorderBin c
       cantidad de elementos posibles para este nivel y en el nivel tercer hay 3 elementos siendo la cantidad máxima 4.
    -}
 
+-- data BinTree a = EB | NodeB (BinTree a) a (BinTree a) deriving Show
+
+-- definimos un arbol para testear la función dcn
+binTree :: BinTree Int
+binTree = NodeB (NodeB EB 2 EB) 1 (NodeB EB 3 (NodeB EB 4 EB)) 
+-- definimos un arbol con 5 niveles para testear la función dcn
+binTree2 :: BinTree Int
+binTree2 = NodeB (NodeB (NodeB EB 5 EB) 2 (NodeB EB 6 EB)) 1 (NodeB (NodeB EB 7 EB) 3 (NodeB EB 4 (NodeB EB 6 EB)))
+
+findDepth :: BinTree a -> Int -> Int 
+findDepth EB i = i
+findDepth (NodeB EB a _) i = i
+findDepth (NodeB _ a EB) i = i
+findDepth (NodeB lc a rc) i = findDepth lc (i + 1) `max` findDepth rc (i + 1)
+
+aux :: BinTree a -> Int -> Int -> [a]
+aux EB _ _ = []
+aux (NodeB lc a rc) idx tope = if idx == tope then [a]
+                                 else aux lc (idx + 1) tope ++ aux rc (idx + 1) tope
+
 dcn :: BinTree a -> [a]
-dcn = undefined
+dcn EB = []
+dcn (NodeB lc a rc) = aux (NodeB lc a rc) 0 i
+                        where i = findDepth (NodeB lc a rc) 0
 
 {- b) maxn, que dado un árbol devuelva la profundidad del nivel completo
       más profundo. Por ejemplo, maxn t = 2   -}
