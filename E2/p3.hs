@@ -3,6 +3,8 @@ import Data.Functor.Classes (Eq1)
 import GHC.Exts.Heap (GenClosure(ConstrClosure))
 import Distribution.Simple.Setup (emptyCleanFlags)
 import Distribution.FieldGrammar (List)
+import GHC.Base (VecElem(Int16ElemRep))
+import Data.Char (digitToInt)
 
 data Color = C{red :: Float, green :: Float, blue :: Float} deriving Show
 
@@ -173,3 +175,38 @@ concatCL (CUnit lista) = lista
 concatCL (Consnoc fstList mdmList lstList) = concatenarListas (concatenarListas fstList (concatCL mdmList)) lstList
 
 ------------------------------------------------------------------
+data Exp = Lit Int | Add Exp Exp | Sub Exp Exp | Prod Exp Exp | Div Exp Exp deriving (Show, Eq)
+eval :: Exp -> Int
+eval (Lit a) = a
+eval (Add a b) = eval a + eval b
+eval (Sub a b) = eval a - eval b
+eval (Prod a b) = eval a * eval b
+eval (Div a b) = eval a `div` eval b
+
+-- Ir apilando y si el que ingresa es un operador, operar los ultimos 2 elementos
+-- Idea de pila necesitamos una lista de Exp
+
+eliminarEspacios :: String -> String
+eliminarEspacios [] = []
+eliminarEspacios (x:xs) | x == ' ' = eliminarEspacios xs
+                        | otherwise = x : eliminarEspacios xs
+
+
+-- 8+9 -> 8
+aux :: [Char] -> [Exp] -> Exp
+aux [] [res] = res
+aux (x:xs) (n1:n2:op) | x == '+' = aux xs (Add n2 n1 : op)
+                      | x == '-' = aux xs (Sub n2 n1 : op)
+                      | x == '*' = aux xs (Prod n2 n1 : op)
+                      | x == '/' = aux xs (Div n2 n1 : op)
+aux (x:xs) e = aux xs (Lit (digitToInt x) : e)
+
+a =  "8 5 3 - 3 * +"  
+b =  "8 5 +"      
+
+parseRPN :: [Char] -> Exp
+parseRPN s = aux (eliminarEspacios s) []
+
+--b 
+evalRPN :: String -> Int
+evalRPN string = eval (parseRPN string)
