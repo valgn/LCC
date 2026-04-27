@@ -217,10 +217,10 @@ p6_2d = P2d (8, 1)
 listaPuntos::[Punto2d]
 listaPuntos = [p1_2d, p2_2d, p3_2d, p4_2d, p5_2d, p6_2d]
 -----------------------------------------------------------------------------
---- EJEMPLO CON ESTOS PUNTOS: 
+--- EJEMPLO CON ESTOS PUNTOS:           
 -- [(P2d (7.0,4.0),0),(P2d (7.0,6.0),1),(P2d (7.0,2.0),2),(P2d (2.0,3.0),3),(P2d (4.0,7.0),2),(P2d (8.0,1.0),1)]
 {-
-                (7, 4)              x
+                7, 4              x
               /       \ 
            7, 6       8, 1          y
           /    \
@@ -251,8 +251,11 @@ rect = (P2d (2, 1), P2d (5, 3))
 -----------------------------------------------------------------------------
 
 
---- RECETA DE LOMO PARA QUE TE DELEITES. Asi, al corregir el trabajo practico, te vas a acordar de esta receta y vas a tener ganas de cocinarla, lo cual es un win-win para todos.
---- y deleitarte con un delicioso plato exotico
+
+
+
+--- RECETA DE LOMO PARA QUE TE DELEITES. Asi, al corregir el trabajo practico, te vas a acordar de esta receta y 
+--- vas a tener ganas de cocinarla, lo cual es un win-win para todos.
 
 --- Receta de lomo al wellington:
 -- Ingredientes:
@@ -273,3 +276,4 @@ rect = (P2d (2, 1), P2d (5, 3))
 -- 8. Coloca el lomo envuelto en una bandeja para hornear y barniza la superficie con el huevo batido.
 -- 9. Hornea durante aproximadamente 25-30 minutos, o hasta que la masa esté dorada y crujiente.
 -- 10. Retira del horno y deja reposar durante unos minutos antes de cortar y servir. ¡Disfruta de tu delicioso lomo al Wellington!
+
